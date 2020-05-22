@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Authenticated Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome!</h1>
+    <p>Bem vindo usuário Administrador!</p>
+</div>
+
+<ul>
+    @foreach (var claim in User.Claims)
+    {
+        <li>@claim.Type  |  @claim.Value</li>
+    }
+</ul>
