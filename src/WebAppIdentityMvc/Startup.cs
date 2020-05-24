@@ -45,6 +45,12 @@ namespace WebAppIdentityMvc
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, opt =>
                 {
                     opt.Cookie.Name = "IdentityCookieeeeeeeeeeeeeah";
+                })
+                .AddFacebook(opt =>
+                {
+                    opt.AppId = Configuration["Facebook:AppId"];
+                    opt.AppSecret = Configuration["Facebook:AppSecret"];
+                    opt.AccessDeniedPath = "/AccessDeniedPathInfo";
                 });
 
             services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
