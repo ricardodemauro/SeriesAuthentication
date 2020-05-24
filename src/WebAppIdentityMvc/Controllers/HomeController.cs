@@ -41,6 +41,25 @@ namespace WebAppIdentityMvc.Controllers
             return View();
         }
 
+        [Authorize()]
+        public IActionResult TwoFactorEnabled()
+        {
+            var claimTwoFactorEnabled =
+                User.Claims.FirstOrDefault(t => t.Type == "amr");
+
+            if (claimTwoFactorEnabled != null &&
+                "mfa".Equals(claimTwoFactorEnabled.Value))
+            {
+                // You logged in with MFA, do the administrative stuff
+                return View();
+            }
+            else
+            {
+                return Redirect(
+                    "/Identity/Account/Manage/TwoFactorAuthentication");
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

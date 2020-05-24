@@ -37,6 +37,8 @@ namespace WebAppIdentityMvc
             services.AddAuthorization(opt =>
             {
                 opt.AddPolicy("Administrator", policyBuilder => policyBuilder.RequireRole("Admin"));
+
+                opt.AddPolicy("TwoFactorEnabled", x => x.RequireClaim("amr", "mfa"));
             });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

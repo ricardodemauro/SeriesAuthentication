@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@inject IAuthorizationService AuthorizationService
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -31,6 +35,24 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Administrator">Administrator</a>
                         </li>
+                        @if ((await AuthorizationService.AuthorizeAsync(User, "TwoFactorEnabled")).Succeeded)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="TwoFactorEnabled">Two Factor Protected</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="TwoFactorEnabled"
+                                   id="tooltip-demo"
+                                   data-toggle="tooltip"
+                                   data-placement="bottom"
+                                   title="MFA is NOT enabled. This is required for the Admin Page. If you have activated MFA, then logout, login again.">
+                                    Admin (Not Enabled)
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

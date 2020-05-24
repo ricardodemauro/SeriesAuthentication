@@ -39,6 +39,15 @@ namespace WebAppIdentityMvc.Identity
 
             claims.Add(new Claim(ClaimTypes.GivenName, user.Name));
 
+            if (user.TwoFactorEnabled)
+            {
+                claims.Add(new Claim("amr", "mfa"));
+            }
+            else
+            {
+                claims.Add(new Claim("amr", "pwd"));
+            }
+
             identity.AddClaims(claims);
             return principal;
         }

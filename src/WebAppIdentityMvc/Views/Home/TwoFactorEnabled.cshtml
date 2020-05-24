@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "TFA Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to TFA Page!</h1>
+</div>
+
+<ul>
+    @foreach (var claim in User.Claims)
+    {
+        <li>@claim.Type  |  @claim.Value</li>
+    }
+</ul>
