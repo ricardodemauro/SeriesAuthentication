@@ -33,7 +33,8 @@ namespace WebAppIdentityMvc
 
             services.AddDbContext<ApplicationDbContext>(opts =>
             {
-                opts.UseInMemoryDatabase("InMemoryIdentity");
+                opts.UseSqlServer(Configuration["ConnectionStrings:IdentitySamples"]);
+                //opts.UseInMemoryDatabase("InMemoryIdentity");
             });
 
             services.AddAuthorization(opt =>
@@ -57,7 +58,7 @@ namespace WebAppIdentityMvc
 
                 opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
 
-                opt.SignIn.RequireConfirmedAccount = false;
+                opt.SignIn.RequireConfirmedAccount = true;
             })
             .AddDefaultUI()
             .AddDefaultTokenProviders()
@@ -65,6 +66,9 @@ namespace WebAppIdentityMvc
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
                 AdditionalUserClaimsPrincipalFactory>();
+
+
+            services.AddEmailService(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
