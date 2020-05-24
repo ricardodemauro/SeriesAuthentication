@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WebAppIdentityMvc.Email;
+using WebAppIdentityMvc.Identity.Email;
 
 namespace WebAppIdentityMvc
 {

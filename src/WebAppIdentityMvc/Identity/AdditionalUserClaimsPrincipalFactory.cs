@@ -37,6 +37,8 @@ namespace WebAppIdentityMvc.Identity
                 claims.Add(new Claim(ClaimTypes.Role, "UserBlaster"));
             }
 
+            claims.Add(new Claim(ClaimTypes.GivenName, user.Name));
+
             identity.AddClaims(claims);
             return principal;
         }

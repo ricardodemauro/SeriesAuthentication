@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebAppIdentityMvc.Email
+namespace WebAppIdentityMvc.Identity.Email
 {
     public class SendGridEmailOptions
     {

@@ -1,17 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using WebAppIdentityMvc.Identity;
+using WebAppIdentityMvc.Identity.Providers;
 using WebAppIdentityMvc.Models;
 
 namespace WebAppIdentityMvc
@@ -59,10 +56,22 @@ namespace WebAppIdentityMvc
                 opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
 
                 opt.SignIn.RequireConfirmedAccount = true;
+
+                opt.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
             })
             .AddDefaultUI()
             .AddDefaultTokenProviders()
+            .AddTokenProvider<CustomEmailConfirmationTokenProvider<ApplicationUser>>("CustomEmailConfirmation")
             .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddTransient<CustomEmailConfirmationTokenProvider<ApplicationUser>>();
+
+            services.Configure<DataProtectionTokenProviderOptions>(o =>
+            {
+                o.TokenLifespan = TimeSpan.FromHours(3);
+                o.Name = "CustomEmailConfirmationTokenProvider";
+            });
+
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
                 AdditionalUserClaimsPrincipalFactory>();
