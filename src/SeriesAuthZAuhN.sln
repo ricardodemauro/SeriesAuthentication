@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeriesAuthZAuhN", "SeriesAuthZAuhN\SeriesAuthZAuhN.csproj", "{E9C168A0-4C54-49E7-875B-AFD1A1606608}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppIdentityMvc", "WebAppIdentityMvc\WebAppIdentityMvc.csproj", "{DAC2DBFC-3C79-42F9-A305-50073224C05C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppIdentityMvc", "WebAppIdentityMvc\WebAppIdentityMvc.csproj", "{DAC2DBFC-3C79-42F9-A305-50073224C05C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppGoogleSheet", "ConsoleAppGoogleSheet\ConsoleAppGoogleSheet.csproj", "{3C308438-0A0F-4399-9362-A7B05AF1AFA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{DAC2DBFC-3C79-42F9-A305-50073224C05C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAC2DBFC-3C79-42F9-A305-50073224C05C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAC2DBFC-3C79-42F9-A305-50073224C05C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C308438-0A0F-4399-9362-A7B05AF1AFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C308438-0A0F-4399-9362-A7B05AF1AFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C308438-0A0F-4399-9362-A7B05AF1AFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C308438-0A0F-4399-9362-A7B05AF1AFA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

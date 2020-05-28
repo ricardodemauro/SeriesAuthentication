@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "fluted-karma-162915",
+  "private_key_id": "b4d2409aa25b128ccc91f8748a1b980cc4237962",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC4nqtxXBQm8tDV\nbPdHZKcIeJbSk9APeHq923ADqCv9qK4XUmIBdm4cU43Ip73Zdn8TzM3jyPkU9nDe\nxaoFti878oqGx310rkuLXBLHn9cCvcOorKa1nbMjPlFzVuf+wtd5Bp+6niixZtPE\nvPYAZQ28D972pfQn0YXxnrZviJq6NW1BWD0gl2BzgfrXzJFTaoiujy/kmAOuwtwp\nGAofj2c6yWeo4ytgZa/7bjVDymZ9QR6P8f3BkVhkR89hDN7YqDNu1197Vya3c14a\nvbsRD+ZNOmhMsfL/k/gYFicXn6TyWobTmwxQUjaoPC7O3TMclaEgFdy07cxjG1Wd\nyH2Nm1EPAgMBAAECggEAA25PMyXXLa4ACbImvEUfBaapOXXxk8AGGoD1nES6euja\nUMqyK9tvIQ+S6hrm+p+9nmn2JEIn88i/WzqXrm4jgzkvc8qFN7a9m2yJ/pHjexst\noe1jsMjA6JOOGy20t1tFp8YXiJQHrnKnfBAbvHir0UnaGXLK1fnGj0B/nMlMms+o\nRndR/NRR+THAI6CJt/+VYcTuzbyGhFw5aou13g+FzH12gX2Y0eqjO9hBzp6Syis5\nS1yqpok6NPkv1vA2l7ZumhMEt5IkAZNuP7RB9UMhBivXDPG6O4bNiqwvAFuPERC1\ndNSUXDXnAfanGh3dz0s3t49zZBcDM+LSgsNpnJYBbQKBgQDkNCffguLhH1lLZ/Fy\nRSr25vMjno6AQdY1QzmYY9OeJDbD05iJ5QyU6Fu50WyREg28iI9Z352dt6R9gAq6\nUgeF3c7KeYPD/2dE4pJXnoEKxdCDNwcpw+ESb0diyG/SL7MI8IHTVuPSmzBIHH+s\nZFGDofFhwKbWzYneMf/sxSZJWwKBgQDPG3sQHXOpmYtjgf0AXZh1P67FXWrMoOps\ngwaJJnlsj+4+Mde329F93TPBBEFVibBKTuKEWQXUQ4G4vMA3DRLY3yn8OCEivjMS\nL8XMgqT6rHreL/UVhJrHOrwzvdYJPjXHBVWYYrPjjPKmyj9sAOuKRCxtsngVacSf\nFKFPWCzxXQKBgDnwH/t4YJ/ldKdXcY6gjwL2qd5uQCHCFV+afMH6/lxVN25Kh5zj\nAWnBAKDR0e2XFtO6HCMmSf8kA+g1HQQnFW/gW8M+TLzzWEW9/IewX3Tbuk/GJdRt\nvfQPOqGS4AkOQTdQ0LVWhysOaZi1W5jqM2PnNsCpx/IbZxh5u09i0pCnAoGATCqJ\nGaYbMVZcot3dU9MYDJa9CayPaG4NiJavQqU5pqlQLuNZuC5JXwaI0AVmmbSndsyI\nFbA/qo6hGHWiIxzVv5hi8nUaCpL0aU3Uap/pWJ8yGKB+e8lmurppGIZKPt/4Gxdl\nIUO7cIYXfyuGI4w7E4B67mTiMM3TF8YYhPuim6kCgYBE5AKOF9ls1Cd8/ie6t2fX\n7L7bk7aSOlE5Cp2AkZOdm7S3ayxkiGiQER6jm0CDnWkgRpMVuIKAKIX4pUBRgT8G\nGoR7oWbzRygimJ1T0FR26Zvuk9IQRXS/o3cpHYtmhiPPS028s/rnWlpAXSa6Y1E/\nfpxjq8vqriqvT5xQed5w2A==\n-----END PRIVATE KEY-----\n",
+  "client_email": "sheets@fluted-karma-162915.iam.gserviceaccount.com",
+  "client_id": "118099007926528763686",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sheets%40fluted-karma-162915.iam.gserviceaccount.com"
+}
