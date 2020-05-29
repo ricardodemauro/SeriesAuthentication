@@ -11,7 +11,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
 using WebAppIdentityMvc.Identity;
+using WebAppIdentityMvc.Identity.Stores;
 using WebAppIdentityMvc.Models;
 
 namespace WebAppIdentityMvc
@@ -31,10 +36,27 @@ namespace WebAppIdentityMvc
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddDbContext<ApplicationDbContext>(opts =>
+            services.AddTransient<MongoProxyTable>();
+            BsonClassMap.RegisterClassMap<IdentityRole>(classMapInitializer: cm =>
             {
-                opts.UseInMemoryDatabase("InMemoryIdentity");
+                cm.AutoMap();
+                cm.MapIdProperty(c => c.Id)
+                   .SetIdGenerator(StringObjectIdGenerator.Instance)
+                   .SetSerializer(new StringSerializer(BsonType.ObjectId));
             });
+            BsonClassMap.RegisterClassMap<ApplicationUser>(classMapInitializer: cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdProperty(c => c.Id)
+                   .SetIdGenerator(StringObjectIdGenerator.Instance)
+                   .SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
+            BsonClassMap.RegisterClassMap<IdentityUserRole<string>>(classMapInitializer: cm =>
+            {
+                cm.AutoMap();
+                cm.UnmapField("_id");
+            });
+
 
             services.AddAuthorization(opt =>
             {
@@ -61,7 +83,8 @@ namespace WebAppIdentityMvc
             })
             .AddDefaultUI()
             .AddDefaultTokenProviders()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddRoleStore<MongoRoleStore<IdentityRole>>()
+            .AddUserStore<MongoUserStore<ApplicationUser>>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
                 AdditionalUserClaimsPrincipalFactory>();

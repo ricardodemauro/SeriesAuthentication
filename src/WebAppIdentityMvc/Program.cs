@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using WebAppIdentityMvc.Identity.Stores;
+using System.Threading.Tasks;
+using WebAppIdentityMvc.Models;
 
 namespace WebAppIdentityMvc
 {
@@ -13,7 +12,11 @@ namespace WebAppIdentityMvc
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+
+            InitializeTableStorage(host);
+
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -22,5 +25,14 @@ namespace WebAppIdentityMvc
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        static void InitializeTableStorage(IHost host)
+        {
+            var db = host.Services.GetService<MongoProxyTable>();
+
+            db.CreateCollection(MongoProxyTable.TABLE_USERS);
+            db.CreateCollection(MongoProxyTable.TABLE_ROLES);
+            db.CreateCollection(MongoProxyTable.TABLE_USER_ROLES);
+        }
     }
 }

@@ -9,7 +9,7 @@ using WebAppIdentityMvc.Models;
 
 namespace WebAppIdentityMvc
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : DbContext//IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
