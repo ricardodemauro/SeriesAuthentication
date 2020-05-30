@@ -1,17 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MongoDB.Bson;
+using System;
 using WebAppIdentityMvc.Identity;
+using WebAppIdentityMvc.Identity.Stores;
 using WebAppIdentityMvc.Models;
 
 namespace WebAppIdentityMvc
@@ -31,10 +28,7 @@ namespace WebAppIdentityMvc
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddDbContext<ApplicationDbContext>(opts =>
-            {
-                opts.UseInMemoryDatabase("InMemoryIdentity");
-            });
+            services.AddTransient<MongoTablesFactory>();
 
             services.AddAuthorization(opt =>
             {
@@ -47,7 +41,7 @@ namespace WebAppIdentityMvc
                     opt.Cookie.Name = "IdentityCookieeeeeeeeeeeeeah";
                 });
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
+            services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
             {
                 opt.Password.RequireDigit = false;
                 opt.Password.RequiredLength = 6;
@@ -61,7 +55,8 @@ namespace WebAppIdentityMvc
             })
             .AddDefaultUI()
             .AddDefaultTokenProviders()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddRoleStore<MongoRoleStore<ApplicationRole, ObjectId>>()
+            .AddUserStore<MongoUserStore<ApplicationUser, ObjectId>>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
                 AdditionalUserClaimsPrincipalFactory>();
