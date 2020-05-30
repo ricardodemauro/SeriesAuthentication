@@ -11,7 +11,6 @@ using WebAppIdentityMvc.Models;
 
 namespace WebAppIdentityMvc.Identity.Stores
 {
-    //based on https://github.com/g0t4/aspnet-identity-mongo/
     public class MongoUserStore<TUser, TKey> : IUserPasswordStore<TUser>,
                                                IUserStore<TUser>,
                                                IUserRoleStore<TUser>
@@ -27,6 +26,7 @@ namespace WebAppIdentityMvc.Identity.Stores
 
         public virtual void Dispose()
         {
+            //do nothing here
         }
 
         public virtual async Task<IdentityResult> CreateAsync(TUser user, CancellationToken token)
@@ -47,9 +47,11 @@ namespace WebAppIdentityMvc.Identity.Stores
             return IdentityResult.Success;
         }
 
-        public Task<string> GetUserIdAsync(TUser user, CancellationToken cancellationToken) => Task.FromResult(user.Id.ToString());
+        public Task<string> GetUserIdAsync(TUser user, CancellationToken cancellationToken)
+            => Task.FromResult(user.Id.ToString());
 
-        public Task<string> GetUserNameAsync(TUser user, CancellationToken cancellationToken) => Task.FromResult(user.UserName);
+        public Task<string> GetUserNameAsync(TUser user, CancellationToken cancellationToken)
+            => Task.FromResult(user.UserName);
 
         public Task SetUserNameAsync(TUser user, string userName, CancellationToken cancellationToken)
         {
@@ -57,7 +59,8 @@ namespace WebAppIdentityMvc.Identity.Stores
             return Task.CompletedTask;
         }
 
-        public Task<string> GetNormalizedUserNameAsync(TUser user, CancellationToken cancellationToken) => Task.FromResult(user.NormalizedUserName);
+        public Task<string> GetNormalizedUserNameAsync(TUser user, CancellationToken cancellationToken)
+            => Task.FromResult(user.NormalizedUserName);
 
         public Task SetNormalizedUserNameAsync(TUser user, string normalizedUserName, CancellationToken cancellationToken)
         {
@@ -85,26 +88,22 @@ namespace WebAppIdentityMvc.Identity.Stores
             return Task.CompletedTask;
         }
 
-        public Task<string> GetPasswordHashAsync(TUser user, CancellationToken token) => Task.FromResult(user.PasswordHash);
+        public Task<string> GetPasswordHashAsync(TUser user, CancellationToken token)
+            => Task.FromResult(user.PasswordHash);
 
         public Task<bool> HasPasswordAsync(TUser user, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(false);
-        }
+            => Task.FromResult(false);
 
         public Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
         {
             user.AddRole(roleName);
-
             return Task.CompletedTask;
-            //await _userRoles.InsertOneAsync(userRole, cancellationToken: cancellationToken);
         }
 
         public Task RemoveFromRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
         {
             user.RemoveRole(roleName);
             return Task.CompletedTask;
-            //await _userRoles.DeleteOneAsync(u => u.UserId.Equals(user.Id) && u.RoleId == roleName, cancellationToken: cancellationToken);
         }
 
         public async Task<IList<string>> GetRolesAsync(TUser user, CancellationToken cancellationToken)
