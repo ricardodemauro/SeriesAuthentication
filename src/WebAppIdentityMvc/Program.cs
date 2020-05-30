@@ -32,7 +32,6 @@ namespace WebAppIdentityMvc
 
             db.CreateCollection(MongoProxyTable.TABLE_USERS);
             db.CreateCollection(MongoProxyTable.TABLE_ROLES);
-            db.CreateCollection(MongoProxyTable.TABLE_USER_ROLES);
         }
     }
 }

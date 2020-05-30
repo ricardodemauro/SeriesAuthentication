@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MongoDB.Driver;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,8 +8,9 @@ using System.Threading.Tasks;
 namespace WebAppIdentityMvc.Identity.Stores
 {
     //based on https://github.com/g0t4/aspnet-identity-mongo/
-    public class MongoRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRole>
-        where TRole : IdentityRole
+    public class MongoRoleStore<TRole, TKey> : IRoleStore<TRole>, IQueryableRoleStore<TRole>
+        where TRole : IdentityRole<TKey>
+         where TKey : IEquatable<TKey>
     {
         private readonly IMongoCollection<TRole> _Roles;
 
@@ -30,20 +32,22 @@ namespace WebAppIdentityMvc.Identity.Stores
 
         public virtual async Task<IdentityResult> UpdateAsync(TRole role, CancellationToken token)
         {
-            var result = await _Roles.ReplaceOneAsync(r => r.Id == role.Id, role, cancellationToken: token);
+            var result = await _Roles.ReplaceOneAsync(r => r.Id.Equals(role.Id), role, cancellationToken: token);
+
             // todo low priority result based on replace result
             return IdentityResult.Success;
         }
 
         public virtual async Task<IdentityResult> DeleteAsync(TRole role, CancellationToken token)
         {
-            var result = await _Roles.DeleteOneAsync(r => r.Id == role.Id, token);
+            var result = await _Roles.DeleteOneAsync(r => r.Id.Equals(role.Id), token);
+
             // todo low priority result based on delete result
             return IdentityResult.Success;
         }
 
         public Task<string> GetRoleIdAsync(TRole role, CancellationToken cancellationToken)
-            => Task.FromResult(role.Id);
+            => Task.FromResult(role.Id.ToString());
 
         public Task<string> GetRoleNameAsync(TRole role, CancellationToken cancellationToken)
             => Task.FromResult(role.Name);
@@ -65,7 +69,7 @@ namespace WebAppIdentityMvc.Identity.Stores
         }
 
         public virtual Task<TRole> FindByIdAsync(string roleId, CancellationToken token)
-            => _Roles.Find(r => r.Id == roleId)
+            => _Roles.Find(r => r.Id.Equals(roleId))
                 .FirstOrDefaultAsync(token);
 
         public virtual Task<TRole> FindByNameAsync(string normalizedName, CancellationToken token)

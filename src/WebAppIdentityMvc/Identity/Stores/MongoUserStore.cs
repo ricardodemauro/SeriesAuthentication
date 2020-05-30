@@ -1,28 +1,28 @@
 ﻿using global::MongoDB.Bson;
 using global::MongoDB.Driver;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Azure.Documents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using WebAppIdentityMvc.Models;
 
 namespace WebAppIdentityMvc.Identity.Stores
 {
     //based on https://github.com/g0t4/aspnet-identity-mongo/
-    public class MongoUserStore<TUser> :
-                IUserPasswordStore<TUser>,
-                IUserStore<TUser>,
-                IUserRoleStore<TUser>
-            where TUser : IdentityUser
+    public class MongoUserStore<TUser, TKey> : IUserPasswordStore<TUser>,
+                                               IUserStore<TUser>,
+                                               IUserRoleStore<TUser>
+        where TUser : IdentityUser<TKey>, IUserRoles
+        where TKey : IEquatable<TKey>
     {
         private readonly IMongoCollection<TUser> _users;
-        private readonly IMongoCollection<IdentityUserRole<string>> _userRoles;
 
         public MongoUserStore(MongoProxyTable proxyMongo)
         {
             _users = proxyMongo.GetCollection<TUser>(MongoProxyTable.TABLE_USERS);
-            _userRoles = proxyMongo.GetCollection<IdentityUserRole<string>>(MongoProxyTable.TABLE_USER_ROLES);
         }
 
         public virtual void Dispose()
@@ -37,17 +37,17 @@ namespace WebAppIdentityMvc.Identity.Stores
 
         public virtual async Task<IdentityResult> UpdateAsync(TUser user, CancellationToken token)
         {
-            await _users.ReplaceOneAsync(u => u.Id == user.Id, user, cancellationToken: token);
+            await _users.ReplaceOneAsync(u => u.Id.Equals(user.Id), user, cancellationToken: token);
             return IdentityResult.Success;
         }
 
         public virtual async Task<IdentityResult> DeleteAsync(TUser user, CancellationToken token)
         {
-            await _users.DeleteOneAsync(u => u.Id == user.Id, token);
+            await _users.DeleteOneAsync(u => u.Id.Equals(user.Id), token);
             return IdentityResult.Success;
         }
 
-        public Task<string> GetUserIdAsync(TUser user, CancellationToken cancellationToken) => Task.FromResult(user.Id);
+        public Task<string> GetUserIdAsync(TUser user, CancellationToken cancellationToken) => Task.FromResult(user.Id.ToString());
 
         public Task<string> GetUserNameAsync(TUser user, CancellationToken cancellationToken) => Task.FromResult(user.UserName);
 
@@ -67,7 +67,7 @@ namespace WebAppIdentityMvc.Identity.Stores
 
         public virtual Task<TUser> FindByIdAsync(string userId, CancellationToken token)
             => IsObjectId(userId)
-                ? _users.Find(u => u.Id == userId).FirstOrDefaultAsync(token)
+                ? _users.Find(u => u.Id.Equals(userId)).FirstOrDefaultAsync(token)
                 : Task.FromResult<TUser>(null);
 
         private bool IsObjectId(string id)
@@ -92,27 +92,25 @@ namespace WebAppIdentityMvc.Identity.Stores
             return Task.FromResult(false);
         }
 
-        public async Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
+        public Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
         {
-            var userRole = new IdentityUserRole<string>()
-            {
-                RoleId = roleName,
-                UserId = user.Id
-            };
-            await _userRoles.InsertOneAsync(userRole, cancellationToken: cancellationToken);
+            user.AddRole(roleName);
+
+            return Task.CompletedTask;
+            //await _userRoles.InsertOneAsync(userRole, cancellationToken: cancellationToken);
         }
 
-        public async Task RemoveFromRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
+        public Task RemoveFromRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
         {
-            await _userRoles.DeleteOneAsync(u => u.UserId == user.Id && u.RoleId == roleName, cancellationToken: cancellationToken);
+            user.RemoveRole(roleName);
+            return Task.CompletedTask;
+            //await _userRoles.DeleteOneAsync(u => u.UserId.Equals(user.Id) && u.RoleId == roleName, cancellationToken: cancellationToken);
         }
 
         public async Task<IList<string>> GetRolesAsync(TUser user, CancellationToken cancellationToken)
         {
-            var userRoles = await _userRoles.Find(x => x.UserId == user.Id)
-                .ToListAsync(cancellationToken);
-
-            return userRoles?.Select(x => x.RoleId).ToList() ?? Array.Empty<string>().ToList();
+            var roles = user.Roles?.ToArray() ?? Array.Empty<string>();
+            return await Task.FromResult(roles);
         }
 
         public async Task<bool> IsInRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)

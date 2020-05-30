@@ -20,7 +20,7 @@ namespace WebAppIdentityMvc.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -28,7 +28,7 @@ namespace WebAppIdentityMvc.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            RoleManager<IdentityRole> roleManager,
+            RoleManager<ApplicationRole> roleManager,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
@@ -139,7 +139,7 @@ namespace WebAppIdentityMvc.Areas.Identity.Pages.Account
         {
             if (!await _roleManager.RoleExistsAsync("Admin"))
             {
-                await _roleManager.CreateAsync(new IdentityRole("Admin"));
+                await _roleManager.CreateAsync(new ApplicationRole("Admin"));
             }
 
             await _userManager.AddToRoleAsync(user, "Admin");

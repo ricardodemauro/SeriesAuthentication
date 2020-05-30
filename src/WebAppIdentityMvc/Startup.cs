@@ -37,26 +37,22 @@ namespace WebAppIdentityMvc
             services.AddRazorPages();
 
             services.AddTransient<MongoProxyTable>();
-            BsonClassMap.RegisterClassMap<IdentityRole>(classMapInitializer: cm =>
-            {
-                cm.AutoMap();
-                cm.MapIdProperty(c => c.Id)
-                   .SetIdGenerator(StringObjectIdGenerator.Instance)
-                   .SetSerializer(new StringSerializer(BsonType.ObjectId));
-            });
+
             BsonClassMap.RegisterClassMap<ApplicationUser>(classMapInitializer: cm =>
             {
                 cm.AutoMap();
-                cm.MapIdProperty(c => c.Id)
-                   .SetIdGenerator(StringObjectIdGenerator.Instance)
-                   .SetSerializer(new StringSerializer(BsonType.ObjectId));
+
+                cm.MapProperty(x => x.Roles)
+                    .SetIgnoreIfNull(true);
+
+                cm.SetIgnoreExtraElements(true);
             });
-            BsonClassMap.RegisterClassMap<IdentityUserRole<string>>(classMapInitializer: cm =>
+            BsonClassMap.RegisterClassMap<ApplicationRole>(classMapInitializer: cm =>
             {
                 cm.AutoMap();
-                cm.UnmapField("_id");
-            });
 
+                cm.SetIgnoreExtraElements(true);
+            });
 
             services.AddAuthorization(opt =>
             {
@@ -69,7 +65,7 @@ namespace WebAppIdentityMvc
                     opt.Cookie.Name = "IdentityCookieeeeeeeeeeeeeah";
                 });
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
+            services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
             {
                 opt.Password.RequireDigit = false;
                 opt.Password.RequiredLength = 6;
@@ -83,8 +79,8 @@ namespace WebAppIdentityMvc
             })
             .AddDefaultUI()
             .AddDefaultTokenProviders()
-            .AddRoleStore<MongoRoleStore<IdentityRole>>()
-            .AddUserStore<MongoUserStore<ApplicationUser>>();
+            .AddRoleStore<MongoRoleStore<ApplicationRole, ObjectId>>()
+            .AddUserStore<MongoUserStore<ApplicationUser, ObjectId>>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
                 AdditionalUserClaimsPrincipalFactory>();

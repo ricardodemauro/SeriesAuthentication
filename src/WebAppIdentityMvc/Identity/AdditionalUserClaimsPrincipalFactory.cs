@@ -11,11 +11,11 @@ using WebAppIdentityMvc.Models;
 namespace WebAppIdentityMvc.Identity
 {
     public class AdditionalUserClaimsPrincipalFactory
-        : UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>
+        : UserClaimsPrincipalFactory<ApplicationUser, ApplicationRole>
     {
         public AdditionalUserClaimsPrincipalFactory(
             UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager,
+            RoleManager<ApplicationRole> roleManager,
             IOptions<IdentityOptions> options)
             : base(userManager, roleManager, options)
         {
