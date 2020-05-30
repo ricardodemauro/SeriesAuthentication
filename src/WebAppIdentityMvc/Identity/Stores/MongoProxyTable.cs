@@ -13,7 +13,6 @@ namespace WebAppIdentityMvc.Identity.Stores
     {
         private readonly string _connectionString;
 
-        public const string TABLE_USER_ROLES = "UserRoles";
         public const string TABLE_USERS = "Users";
         public const string TABLE_ROLES = "Roles";
 
@@ -33,9 +32,6 @@ namespace WebAppIdentityMvc.Identity.Stores
         {
             MongoClient client = new MongoClient(_connectionString);
             var db = client.GetDatabase("IdentityDb");
-
-            //db.GetCollection(tableName).Count(x => true);
-            //db.CreateCollection(tableName);
         }
     }
 }
