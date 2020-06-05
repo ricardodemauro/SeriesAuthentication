@@ -11,8 +11,9 @@ namespace WebAppIdentityMvc.Identity.Stores
 {
     public class MongoUserStore<TUser, TKey> : IUserStore<TUser>,
                                                IUserPasswordStore<TUser>,
-                                               IUserRoleStore<TUser>
-        where TUser : IdentityUser<TKey>, IIdentityUserRole
+                                               IUserRoleStore<TUser>,
+                                               IUserLoginStore<TUser>
+        where TUser : IdentityUser<TKey>, IIdentityUserRole, IIdentityUserLogin
         where TKey : IEquatable<TKey>
     {
         private readonly IMongoCollection<TUser> _users;
@@ -66,7 +67,7 @@ namespace WebAppIdentityMvc.Identity.Stores
             return Task.CompletedTask;
         }
 
-        
+
         public virtual Task<TUser> FindByIdAsync(string userId, CancellationToken token)
             => IsObjectId(userId)
                 ? _users.Find(u => u.Id.Equals(userId)).FirstOrDefaultAsync(token)
@@ -121,6 +122,28 @@ namespace WebAppIdentityMvc.Identity.Stores
         public Task<IList<TUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
+        }
+
+        public Task AddLoginAsync(TUser user, UserLoginInfo login, CancellationToken cancellationToken)
+        {
+            user.AddUserLogin(login);
+            return Task.CompletedTask;
+        }
+
+        public Task RemoveLoginAsync(TUser user, string loginProvider, string providerKey, CancellationToken cancellationToken)
+        {
+            user.RemoveUserLogin(loginProvider, providerKey);
+            return Task.CompletedTask;
+        }
+
+        public async Task<IList<UserLoginInfo>> GetLoginsAsync(TUser user, CancellationToken cancellationToken)
+        {
+            return await Task.FromResult(user.UserLogins);
+        }
+
+        public async Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
+        {
+            return await Task.FromResult(default(TUser));
         }
     }
 }
