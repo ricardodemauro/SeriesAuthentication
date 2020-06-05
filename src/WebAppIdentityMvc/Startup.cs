@@ -42,9 +42,6 @@ namespace WebAppIdentityMvc
             {
                 cm.AutoMap();
 
-                cm.MapProperty(x => x.Roles)
-                    .SetIgnoreIfNull(true);
-
                 cm.SetIgnoreExtraElements(true);
             });
             BsonClassMap.RegisterClassMap<ApplicationRole>(classMapInitializer: cm =>
